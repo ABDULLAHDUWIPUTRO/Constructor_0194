@@ -43,3 +43,84 @@ public:
     }
 };
 
+class Peminjam {
+private:
+    string nama;
+    int ID;
+    int totalPinjaman;
+
+public:
+    Peminjam(string n, int id) : nama(n), ID(id), totalPinjaman(0) {}
+
+    void tambahPinjaman() {
+        totalPinjaman++;
+    }
+
+    void kurangiPinjaman() {
+        if (totalPinjaman > 0) {
+            totalPinjaman--;
+        } else {
+            cout << "Error: Tidak ada buku yang dipinjam untuk dikembalikan!" << endl;
+        }
+    }
+
+    void tampilkanInfo() const {
+        cout << "Nama Peminjam: " << nama << ", ID: " << ID 
+             << ", Total Pinjaman: " << totalPinjaman << endl;
+    }
+    
+    string getNama() const {
+        return nama;
+    }
+};
+
+class Petugas {
+private:
+    string nama;
+    int ID_petugas;
+
+public:
+    Petugas(string n, int id) : nama(n), ID_petugas(id) {}
+
+    void prosesPinjam(Buku &b, Peminjam &p) {
+        if (!b.getDipinjam()) {
+            b.setDipinjam(true);
+            p.tambahPinjaman();
+            cout << "Peminjaman berhasil oleh " << p.getNama() << endl;
+        } else {
+            cout << "Buku sudah dipinjam!" << endl;
+        }
+    }
+
+    void prosesKembali(Buku &b, Peminjam &p) {
+        if (b.getDipinjam()) {
+            b.setDipinjam(false);
+            p.kurangiPinjaman();
+            cout << "Pengembalian berhasil oleh " << p.getNama() << endl;
+        } else {
+            cout << "Buku tidak dalam status dipinjam!" << endl;
+        }
+    }
+};
+
+int main() {
+    Buku buku1("C++ Dasar", "Bjarne Stroustrup");
+    Peminjam peminjam1("Abdullah", 101);
+    Petugas petugas1("Rizal", 201);
+
+    cout << "\n--- Informasi Awal ---" << endl;
+    buku1.tampilkanInfo();
+    peminjam1.tampilkanInfo();
+
+    cout << "\n--- Proses Peminjaman ---" << endl;
+    petugas1.prosesPinjam(buku1, peminjam1);
+    buku1.tampilkanInfo();
+    peminjam1.tampilkanInfo();
+
+    cout << "\n--- Proses Pengembalian ---" << endl;
+    petugas1.prosesKembali(buku1, peminjam1);
+    buku1.tampilkanInfo();
+    peminjam1.tampilkanInfo();
+
+    return 0;
+}
