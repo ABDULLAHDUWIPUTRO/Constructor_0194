@@ -1,1 +1,0 @@
-"cara menjadi raja kegelapan, penulis raja iblis"
