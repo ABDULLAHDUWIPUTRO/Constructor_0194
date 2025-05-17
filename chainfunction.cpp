@@ -1,19 +1,25 @@
 #include <iostream>
-2 using namespace std;
-
+using namespace std;
 class buku
-4
-5 string judul;
-6
-7 public:
-8 buku setJudul(string judul)
-9 {
-10 this->judul = judul;
-11 return *this; // chain function
-12 }
-13 string getJudul((
-14 {
-15 return this->judul;
-16 }
-17
-18 } bukunya;
+{
+    string judul;
+
+public:
+    buku setJudul(string judul)
+    {
+        this->judul = judul;
+        return *this; // chain function
+    }
+    string getJudul()
+    {
+        return this->judul;
+    }
+} bukunya;
+
+int main()
+{
+    // bukunya.setJudul("Matematika");
+    // cout << bukunya.getJudul();
+    cout << bukunya.setJudul("Matematika").getJudul(); // chain function calls
+    return 0;
+}
