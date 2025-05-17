@@ -17,14 +17,8 @@
 // tetapi diimplementasikan di dalam class Admin. Dengan kata lain, Admin hanya diizinkan mengakses data privat
 // melalui fungsi friend yang disediakan secara terbatas.
 
-
 #include <iostream>
-#include <vector>
 using namespace std;
-
-class Peminjam;  // Forward declaration
-class Petugas;
-class Admin;
 
 class Buku {
 private:
@@ -40,86 +34,12 @@ public:
              << ", Status: " << (dipinjam ? "Dipinjam" : "Tersedia") << endl;
     }
 
-    friend class Petugas;  // Petugas berhak mengubah status peminjaman
-    friend void aksesData(Admin&, const Buku&);
-};
-
-class Peminjam {
-private:
-    string nama;
-    int ID;
-    int totalPinjaman;
-
-public:
-    Peminjam(string n, int id) : nama(n), ID(id), totalPinjaman(0) {}
-
-    friend class Petugas;  // Petugas berhak mengelola jumlah pinjaman
-    friend void aksesData(Admin&, const Peminjam&);
-};
-
-class Petugas {
-private:
-    string nama;
-    int ID_petugas;
-    string levelAkses;
-
-public:
-    Petugas(string n, int id, string level) : nama(n), ID_petugas(id), levelAkses(level) {}
-
-    void prosesPinjam(Buku* b, Peminjam* p) {
-        if (!b->dipinjam) {
-            b->dipinjam = true;
-            p->totalPinjaman++;
-            cout << "Peminjaman berhasil oleh " << p->nama << endl;
-        } else {
-            cout << "Buku sudah dipinjam!" << endl;
-        }
+    void setDipinjam(bool status) {
+        dipinjam = status;
     }
 
-    void prosesKembali(Buku* b, Peminjam* p) {
-        if (b->dipinjam) {
-            b->dipinjam = false;
-            p->totalPinjaman--;
-            cout << "Pengembalian berhasil oleh " << p->nama << endl;
-        } else {
-            cout << "Buku tidak dalam status dipinjam!" << endl;
-        }
+    bool getDipinjam() const {
+        return dipinjam;
     }
-
-    friend class Admin;  // Admin berhak mengubah level akses
 };
 
-class Admin {
-public:
-    void ubahAksesPetugas(Petugas& petugas, string levelBaru) {
-        petugas.levelAkses = levelBaru;
-        cout << "Level akses Petugas diperbarui ke: " << levelBaru << endl;
-    }
-
-    friend void aksesData(Admin&, const Buku&);
-    friend void aksesData(Admin&, const Peminjam&);
-};
-
-void aksesData(Admin& admin, const Buku& buku) {
-    cout << "Admin mengakses buku yang sedang diproses: " << buku.judul << endl;
-}
-
-void aksesData(Admin& admin, const Peminjam& peminjam) {
-    cout << "Admin melihat total pinjaman milik " << peminjam.nama 
-         << ": " << peminjam.totalPinjaman << " buku." << endl;
-}
-
-int main() {
-    Buku buku1("C++ Dasar", "Bjarne Stroustrup");
-    Peminjam peminjam1("Abdullah", 101);
-    Petugas petugas1("Rizal", 201, "Standar");
-    Admin admin1;
-
-    petugas1.prosesPinjam(&buku1, &peminjam1);
-    admin1.ubahAksesPetugas(petugas1, "Senior");
-    aksesData(admin1, buku1);
-    aksesData(admin1, peminjam1);
-    petugas1.prosesKembali(&buku1, &peminjam1);
-
-    return 0;
-}
