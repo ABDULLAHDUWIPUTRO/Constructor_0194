@@ -104,9 +104,9 @@ public:
 };
 
 int main() {
-    Buku buku1("C++ Dasar", "Bjarne Stroustrup");
+    Buku buku1("cara menjadi raja kegelapan", "RAJA IBLIS VAN DEN BURG");
     Peminjam peminjam1("Abdullah", 101);
-    Petugas petugas1("Rizal", 201);
+    Petugas petugas1("ambon", 201);
 
     cout << "\n--- Informasi Awal ---" << endl;
     buku1.tampilkanInfo();
